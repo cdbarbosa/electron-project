@@ -21,7 +21,7 @@ export default defineConfig({
       },
     },
     css: {
-      postcss: "./postcss.config.ts",
+      postcss: "./postcss.config.mjs",
     },
     plugins: [tailwindcss(), react()],
   },
