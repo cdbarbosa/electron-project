@@ -1,7 +1,9 @@
 import { app, shell, BrowserWindow, ipcMain } from "electron";
 import path, { join } from "node:path";
-import { electronApp, optimizer, is } from "@electron-toolkit/utils";
+import { electronApp, optimizer } from "@electron-toolkit/utils";
 import icon from "../../resources/icon.png?asset";
+
+import "./ipc";
 
 // @ts-ignore
 import { registerRoute } from "../lib/electron-router-dom.js";
