@@ -2,11 +2,11 @@
   "name": "Rotion",
   "poductName": "Rotion",
   "version": "1.0.0",
+  "type": "commonjs",
   "description": "An Electron application with React and TypeScript",
   "main": "./out/main/index.js",
   "author": "example.com",
   "homepage": "https://electron-vite.org",
-  "type": "module",
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint --cache .",

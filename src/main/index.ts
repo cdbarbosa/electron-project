@@ -4,6 +4,7 @@ import { electronApp, optimizer } from "@electron-toolkit/utils";
 import icon from "../../resources/icon.png?asset";
 
 import "./ipc";
+import "./store";
 
 // @ts-ignore
 import { registerRoute } from "../lib/electron-router-dom.js";
