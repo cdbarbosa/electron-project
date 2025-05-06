@@ -5,13 +5,16 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Document } from "src/shared/types/ipc";
 
-export function Header() {
+interface HeaderProps {
+  isSidebarOpen: boolean;
+}
+
+export function Header({ isSidebarOpen }: HeaderProps) {
   const { id } = useParams();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const isMacOS = process.platform === "darwin";
-  const isSidebarOpen = true;
 
   const { mutate: deleteDocument, isPending } = useMutation({
     mutationKey: ["delete.document"],
@@ -42,7 +45,7 @@ export function Header() {
           block: !isSidebarOpen,
         })}
       >
-        <CaretDoubleRight className="h-4 w-4" />
+        <CaretDoubleRight className="h-4 w-4 cursor-pointer" />
       </button>
 
       {id && (

@@ -7,7 +7,7 @@ export function Default() {
     <div className="h-screen w-screen flex">
       <Sidebar />
       <div className="flex-1 flex flex-col max-h-screen">
-        <Header />
+        <Header isSidebarOpen={false} />
 
         <Outlet />
       </div>
