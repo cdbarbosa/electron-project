@@ -1,20 +1,38 @@
-import { Command } from 'cmdk'
-import { File, MagnifyingGlass } from 'phosphor-react'
-import { useEffect, useState } from 'react'
+import { useQuery } from "@tanstack/react-query";
+import { Command } from "cmdk";
+import { File, MagnifyingGlass } from "phosphor-react";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Document } from "src/shared/types/ipc";
 
-export function SearchBar() {
-  const [open, setOpen] = useState(false)
+interface SearchBarParams {
+  open: boolean;
+  setOpen: (isOpen: boolean) => void;
+}
+
+export function SearchBar({ open, setOpen }: SearchBarParams) {
+  const navigate = useNavigate();
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      if (e.key === 'k' && e.metaKey) {
-        setOpen((state) => !state)
+      if (e.key === "k" && e.metaKey) {
+        setOpen(!open);
       }
-    }
+    };
 
-    document.addEventListener('keydown', down)
-    return () => document.removeEventListener('keydown', down)
-  }, [setOpen])
+    document.addEventListener("keydown", down);
+    return () => document.removeEventListener("keydown", down);
+  }, [open, setOpen]);
+
+  const { data } = useQuery({
+    queryKey: ["documents"],
+    queryFn: async () => {
+      return await window.api.fetchDocuments().then(({ data }) => data);
+    },
+    initialData() {
+      return [];
+    },
+  });
 
   return (
     <Command.Dialog
@@ -36,26 +54,20 @@ export function SearchBar() {
           Nenhum documento encontrado.
         </Command.Empty>
 
-        <Command.Item className="py-3 px-4 text-rotion-50 text-sm flex items-center gap-2 hover:bg-rotion-700 aria-selected:!bg-rotion-600">
-          <File className="w-4 h-4" />
-          Untitled
-        </Command.Item>
-
-        <Command.Item className="py-3 px-4 text-rotion-50 text-sm flex items-center gap-2 hover:bg-rotion-700 aria-selected:!bg-rotion-600">
-          <File className="w-4 h-4" />
-          Ignite
-        </Command.Item>
-
-        <Command.Item className="py-3 px-4 text-rotion-50 text-sm flex items-center gap-2 hover:bg-rotion-700 aria-selected:!bg-rotion-600">
-          <File className="w-4 h-4" />
-          Discover
-        </Command.Item>
-
-        <Command.Item className="py-3 px-4 text-rotion-50 text-sm flex items-center gap-2 hover:bg-rotion-700 aria-selected:!bg-rotion-600">
-          <File className="w-4 h-4" />
-          Rocketseat
-        </Command.Item>
+        {data?.map((item: Document) => (
+          <Command.Item
+            key={item.id}
+            onSelect={() => {
+              navigate(`document/${item.id}`);
+              setOpen(false);
+            }}
+            className="py-3 px-4 text-rotion-50 text-sm flex items-center gap-2 hover:bg-rotion-700 aria-selected:!bg-rotion-600"
+          >
+            <File className="w-4 h-4" />
+            {item.title}
+          </Command.Item>
+        ))}
       </Command.List>
     </Command.Dialog>
-  )
+  );
 }
