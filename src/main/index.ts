@@ -2,6 +2,7 @@ import { app, shell, BrowserWindow, ipcMain } from "electron";
 import path, { join } from "node:path";
 import { electronApp, optimizer } from "@electron-toolkit/utils";
 import icon from "../../resources/icon.png?asset";
+import { createTray } from "./try";
 
 import "./ipc";
 import "./store";
@@ -28,6 +29,8 @@ function createWindow(): void {
       sandbox: false,
     },
   });
+
+  createTray(mainWindow);
 
   registerRoute({
     id: "main",
